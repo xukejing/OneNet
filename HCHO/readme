@@ -1,6 +1,11 @@
 用串口1实现甲醛模块接入
-
+  
+  
 1、把usart和hcho放入项目hardware目录，其中usart覆盖原始文件。
 串口1中断函数USART1_IRQHandler()会自动处理来自甲醛模块的数据，并把数据解析给hchoInfo.data。这由串口中断触发，不需要单独的getvalue函数
 2、主函数里的Hardware_Init()要调用Usart1_Init(9600)，把串口1初始化，其中波特率要与甲醛模块一致。
 每隔两秒把hchoInfo.data赋值给一个unsigned short类型的数据，可以放在	if(timInfo.timer6Out - sensor_time >= 80)的判断里
+  
+  
+注意事项：  
+串口1是原调试串口，原框架里的语句UsartPrintf(USART_DEBUG...会把调试信息发送给甲醛模块。如果导致甲醛模块错误解析，建议都注释掉。
